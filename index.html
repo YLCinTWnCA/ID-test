@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>感染管制常見問答｜記憶卡與測驗</title>
+<style>
+:root{
+  --bg:#F5F9F8;
+  --ink:#173430;
+  --ink-soft:#4B6560;
+  --teal:#0E7C66;
+  --teal-deep:#0A5747;
+  --teal-tint:#E3F1ED;
+  --amber:#B75C1F;
+  --amber-tint:#FBEFE3;
+  --card:#FFFFFF;
+  --line:#D7E5E1;
+  --radius:14px;
+  --shadow:0 2px 10px rgba(23,52,48,.08);
+  font-size:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+header{
+  background:linear-gradient(135deg,var(--teal-deep),var(--teal));
+  color:#fff;padding:28px 20px 22px;text-align:center;
+}
+header h1{font-size:1.5rem;letter-spacing:.08em;font-weight:700}
+header p{opacity:.85;font-size:.9rem;margin-top:6px;letter-spacing:.05em}
+nav{
+  display:flex;justify-content:center;gap:8px;
+  background:#fff;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20;padding:10px 12px;flex-wrap:wrap;
+}
+nav button{
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+  padding:9px 20px;border-radius:999px;font-size:.95rem;cursor:pointer;
+  font-family:inherit;letter-spacing:.05em;transition:.15s;
+}
+nav button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+nav button.active{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
+main{max-width:960px;margin:0 auto;padding:22px 16px 80px}
+.hidden{display:none!important}
+
+/* ---------- 讀書卡 ---------- */
+.intro{
+  background:var(--teal-tint);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 18px;font-size:.92rem;color:var(--ink-soft);margin-bottom:20px;
+}
+.topic{margin-bottom:34px}
+.topic-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.topic-head .no{
+  font-size:.8rem;font-weight:700;color:#fff;background:var(--teal);
+  border-radius:6px;padding:2px 8px;letter-spacing:.1em;flex-shrink:0;
+}
+.topic-head h2{font-size:1.15rem;letter-spacing:.05em}
+.mnemonic{
+  display:inline-block;background:var(--amber-tint);color:var(--amber);
+  border:1px dashed var(--amber);border-radius:8px;padding:5px 12px;
+  font-size:.88rem;font-weight:700;letter-spacing:.06em;margin:4px 0 12px;
+}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.flip{perspective:1200px;cursor:pointer}
+.flip-inner{
+  display:grid;transition:transform .5s;transform-style:preserve-3d;
+  border-radius:var(--radius);box-shadow:var(--shadow);min-height:150px;
+}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{
+  grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--radius);padding:16px 16px 34px;position:relative;
+}
+.face.front{background:var(--card);border:1px solid var(--line)}
+.face.back{background:var(--teal-deep);color:#fff;transform:rotateY(180deg)}
+.face .tag{
+  font-size:.72rem;font-weight:700;letter-spacing:.15em;
+  color:var(--teal);margin-bottom:6px;
+}
+.face.back .tag{color:#9FD8CB}
+.face .txt{font-size:.94rem}
+.face.back .txt{font-size:.92rem}
+.face .hint{
+  position:absolute;right:12px;bottom:8px;font-size:.72rem;opacity:.55;letter-spacing:.05em;
+}
+@media (prefers-reduced-motion: reduce){
+  .flip-inner{transition:none}
+}
+
+/* ---------- 測驗 ---------- */
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:26px 22px;
+}
+.panel h2{font-size:1.2rem;margin-bottom:12px;letter-spacing:.05em}
+label{display:block;font-size:.9rem;color:var(--ink-soft);margin-bottom:6px}
+input[type=text]{
+  width:100%;max-width:360px;padding:10px 14px;font-size:1rem;font-family:inherit;
+  border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);
+}
+input[type=text]:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.btn{
+  display:inline-block;background:var(--teal);color:#fff;border:none;cursor:pointer;
+  padding:11px 26px;border-radius:999px;font-size:1rem;font-family:inherit;
+  font-weight:700;letter-spacing:.08em;transition:.15s;margin-top:14px;
+}
+.btn:hover{background:var(--teal-deep)}
+.btn:focus-visible{outline:2px solid var(--teal-deep);outline-offset:2px}
+.btn.ghost{background:#fff;color:var(--teal);border:1px solid var(--teal)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.progress-bar{height:8px;background:var(--teal-tint);border-radius:99px;overflow:hidden;margin:14px 0 20px}
+.progress-fill{height:100%;background:var(--teal);width:0%;transition:width .3s}
+.q-num{font-size:.82rem;color:var(--ink-soft);letter-spacing:.1em;margin-bottom:6px}
+.q-text{font-size:1.05rem;font-weight:700;margin-bottom:16px}
+.opts{display:grid;gap:10px}
+.opt{
+  text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:12px 16px;font-size:.96rem;font-family:inherit;cursor:pointer;color:var(--ink);transition:.12s;
+}
+.opt:hover{border-color:var(--teal);background:var(--teal-tint)}
+.opt:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.opt.correct{background:var(--teal-tint);border-color:var(--teal);font-weight:700}
+.opt.wrong{background:#FBE9E4;border-color:#C9542B}
+.opt:disabled{cursor:default}
+.feedback{margin-top:14px;font-size:.9rem;color:var(--ink-soft)}
+.feedback strong{color:var(--teal-deep)}
+.score-big{font-size:3rem;font-weight:800;color:var(--teal);letter-spacing:.05em}
+.score-line{font-size:1rem;color:var(--ink-soft);margin-top:4px}
+.pass{display:inline-block;margin-top:10px;padding:5px 16px;border-radius:999px;font-weight:700;font-size:.92rem}
+.pass.ok{background:var(--teal-tint);color:var(--teal-deep)}
+.pass.no{background:#FBE9E4;color:#A2431C}
+.review{margin-top:20px;text-align:left}
+.review h3{font-size:.95rem;margin-bottom:8px;color:var(--ink-soft)}
+.review-item{border-left:3px solid #C9542B;padding:6px 12px;margin-bottom:10px;font-size:.88rem;background:#FDF6F3;border-radius:0 8px 8px 0}
+.review-item .ra{color:var(--teal-deep);font-weight:700}
+
+/* ---------- 成績紀錄 ---------- */
+.leaderboard{margin:16px 0 24px;display:grid;gap:8px}
+.lb-row{
+  display:flex;align-items:center;gap:12px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:10px 16px;box-shadow:var(--shadow);
+}
+.lb-row.first{background:linear-gradient(90deg,#FFF9E8,#fff);border-color:#E8C766}
+.lb-medal{font-size:1.5rem;flex-shrink:0;width:2rem;text-align:center}
+.lb-name{font-weight:700;font-size:1rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-score{font-weight:800;font-size:1.15rem;color:var(--teal-deep);flex-shrink:0}
+.lb-sub{font-size:.78rem;color:var(--ink-soft);flex-shrink:0}
+.lb-title{font-size:1rem;font-weight:700;color:var(--teal-deep);margin-top:18px;letter-spacing:.08em}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:12px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:var(--teal-tint);color:var(--teal-deep);font-weight:700;letter-spacing:.05em}
+tr:hover td{background:#FAFCFB}
+.badge-score{font-weight:800;color:var(--teal-deep)}
+.badge-score.low{color:#A2431C}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.note{font-size:.8rem;color:var(--ink-soft);margin-top:14px}
+.empty{padding:30px 0;text-align:center;color:var(--ink-soft);font-size:.92rem}
+footer{text-align:center;color:var(--ink-soft);font-size:.78rem;padding:20px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>感染管制常見問答</h1>
+  <p>翻卡記憶 × 隨堂測驗 × 成績留存　—　感控稽核準備專用</p>
+</header>
+
+<nav>
+  <button id="tab-study" class="active" onclick="showTab('study')">📖 讀書卡</button>
+  <button id="tab-quiz" onclick="showTab('quiz')">✏️ 測驗</button>
+  <button id="tab-records" onclick="showTab('records')">📋 成績紀錄</button>
+</nav>
+
+<main>
+
+<!-- ================= 讀書卡 ================= -->
+<section id="view-study">
+  <div class="intro">
+    每張卡片正面是稽核委員常問的問題，<strong>先在心裡回答，再點卡片翻面對答案</strong>。橘色虛線框是好背口訣，先背口訣再展開細節最有效率。全部讀完後請到「測驗」頁驗收。
+  </div>
+  <div id="topics"></div>
+</section>
+
+<!-- ================= 測驗 ================= -->
+<section id="view-quiz" class="hidden">
+  <!-- 開始畫面 -->
+  <div class="panel" id="quiz-start">
+    <h2>隨堂測驗</h2>
+    <p style="font-size:.92rem;color:var(--ink-soft);margin-bottom:18px">
+      共 20 題單選題，題目與選項每次隨機排列。答完立即顯示成績並自動記錄。80 分以上為通過。
+    </p>
+    <label for="quiz-name">請輸入姓名（必填，將記錄於成績單）</label>
+    <input type="text" id="quiz-name" maxlength="20" placeholder="例：王小明" autocomplete="off">
+    <br>
+    <button class="btn" onclick="startQuiz()">開始測驗</button>
+  </div>
+
+  <!-- 作答畫面 -->
+  <div class="panel hidden" id="quiz-run">
+    <div class="q-num" id="q-num"></div>
+    <div class="progress-bar"><div class="progress-fill" id="q-progress"></div></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="opts" id="q-opts"></div>
+    <div class="feedback" id="q-feedback"></div>
+    <button class="btn hidden" id="q-next" onclick="nextQuestion()">下一題 →</button>
+  </div>
+
+  <!-- 結果畫面 -->
+  <div class="panel hidden" id="quiz-result" style="text-align:center">
+    <h2>測驗完成</h2>
+    <div class="score-big" id="r-score"></div>
+    <div class="score-line" id="r-detail"></div>
+    <div id="r-pass"></div>
+    <div class="review" id="r-review"></div>
+    <div style="margin-top:18px">
+      <button class="btn" onclick="resetQuiz()">再測一次</button>
+      <button class="btn ghost" onclick="showTab('records')">查看成績紀錄</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 成績紀錄 ================= -->
+<section id="view-records" class="hidden">
+  <div class="panel">
+    <h2>成績紀錄</h2>
+    <div class="tools">
+      <button class="btn ghost" style="margin-top:0" onclick="loadRecords()">🔄 重新整理</button>
+      <button class="btn ghost" style="margin-top:0" onclick="exportCSV()">⬇️ 匯出 CSV</button>
+    </div>
+    <div class="lb-title">🏅 排行榜（前五名，取每人最佳成績）</div>
+    <div id="leaderboard-box"><div class="empty">載入中…</div></div>
+    <div class="lb-title">📋 全部紀錄</div>
+    <div id="records-box"><div class="empty">載入中…</div></div>
+    <p class="note" id="storage-note">※ 載入中…</p>
+  </div>
+</section>
+
+</main>
+<footer>感染管制教育訓練教材｜通過標準 80 分</footer>
+
+<script>
+/* ============================================================
+   讀書卡資料（8 大主題）
+============================================================ */
+const TOPICS = [
+{
+  no:"1", title:"手部衛生（最常考：現場示範與稽核數據）",
+  mnemonic:"口訣：五時機＝「兩前三後」｜七步驟＝「內外夾弓大立腕」",
+  cards:[
+    {q:"洗手五時機是哪五個？順序與情境？", a:"①接觸病人前 ②執行清潔／無菌操作前 ③暴露體液風險後 ④接觸病人後 ⑤接觸病人周遭環境後。記法：兩個「前」（保護病人）、三個「後」（保護自己與環境）。"},
+    {q:"洗手七步驟？乾／濕洗手各要多久？", a:"內、外、夾、弓、大、立（力）、腕。乾洗手 20–30 秒；濕洗手 40–60 秒。"},
+    {q:"單位的洗手遵從率與正確率是多少？誰稽核、多久一次？", a:"回答單位實際數據（例：遵從率由 81–83% 提升至 93%，超過 90% 目標）。由感控負責人／單位種子稽核員定期（如每月）以觀察法稽核，結果回饋單位檢討。"},
+    {q:"洗手設備故障或乾洗手液空了怎麼辦？", a:"立即通報單位負責人／總務（依單位通報流程），先改用鄰近可用洗手設施；補充液依領用流程即時補充，不可讓洗手點空瓶。"}
+  ]
+},
+{
+  no:"2", title:"個人防護裝備（PPE）穿脫與隔離措施",
+  mnemonic:"脫的口訣：「套 → 衣 → 鏡 → 罩」，脫完馬上洗手（最髒的先脫）",
+  cards:[
+    {q:"脫卸 PPE 的正確順序？（最常考）", a:"手套 → 防護衣 → 護目鏡／面罩 → 口罩，脫卸後立即執行手部衛生。原則：污染最重的先脫，口罩最後。"},
+    {q:"飛沫、空氣、接觸傳染的隔離標示與 PPE 有何不同？", a:"飛沫（如流感）：外科口罩。空氣（如開放性肺結核）：N95、負壓／單獨病室。接觸（如 MDRO 多重抗藥性菌、疥瘡）：手套＋隔離衣，設備專用，加強環境清消。各類須掛對應隔離標示卡。"},
+    {q:"防護裝備存放在哪？不足時怎麼申請？", a:"回答單位實際存放點（如隔離車／庫房），並說明依領用單向總務／庫房申請補充，維持安全庫存量。"}
+  ]
+},
+{
+  no:"3", title:"安全注射與藥品管理",
+  mnemonic:"數字口訣：多劑量藥「28 天」｜針紮盒「2/3 滿」就封",
+  cards:[
+    {q:"多劑量藥品（Multidose Vials）開封後可放多久？要標示什麼？", a:"須標示「開封日期」與「到期日」。依仿單規定；若仿單未註明，最長不超過 28 天。"},
+    {q:"抽藥在哪裡準備？針頭可以留在藥瓶重複抽嗎？", a:"須在清潔區（藥品準備區）抽取；禁止將針頭留置於藥瓶重複抽取，一針一筒一次使用。"},
+    {q:"針紮盒裝到多少要更換？", a:"2/3 滿即應封口更換，不可擠壓、不可用手壓實。"},
+    {q:"不小心被針紮到怎麼辦？", a:"立即以肥皂與清水沖洗傷口→通報單位主管與感控→依流程填寫紮傷通報單→評估來源病人並依規定追蹤抽血（如 B 肝、C 肝、HIV）。"}
+  ]
+},
+{
+  no:"4", title:"環境清潔與消毒（清潔人員、護理人員都會被抽問）",
+  mnemonic:"漂白水口訣：「一般 500、吐瀉 1000 起」｜擦拭：「淨→污、高→低、不回擦」",
+  cards:[
+    {q:"高頻率接觸表面有哪些？多久清潔一次？", a:"床欄、床旁桌、門把、電燈開關、呼叫鈴、點滴架、電腦鍵盤等。至少每日清潔消毒，污染時隨時清消（依單位規範回答頻率）。"},
+    {q:"消毒劑濃度多少 ppm？怎麼泡？", a:"一般環境用 500 ppm 漂白水；嘔吐物、腹瀉、諾羅或腸病毒污染區用 1,000–5,000 ppm。以市售 5% 漂白水稀釋（例：100 倍稀釋約 500 ppm），當日泡製當日使用。"},
+    {q:"消毒液塗抹後要靜置多久才有效？", a:"須依規定之接觸時間（Contact Time）靜置（常見約 10 分鐘，依產品仿單），不可噴完立刻擦乾。"},
+    {q:"抹布與拖把如何區分管理？擦拭順序？", a:"依區域分色管理（如病室、廁所、公共區分開），用畢清洗晾乾。擦拭順序：由乾淨到髒污、由高到低，同一面不回擦。"}
+  ]
+},
+{
+  no:"5", title:"組合式照護 Care Bundles",
+  mnemonic:"三大 Bundle：導尿管 CAUTI｜中心導管 CLABSI｜呼吸器 VAP",
+  cards:[
+    {q:"單位推行哪些 Care Bundle？", a:"依單位實況回答，常見：導尿管相關泌尿道感染（CAUTI）、中心靜脈導管相關血流感染（CLABSI）、呼吸器相關肺炎（VAP）組合式照護。"},
+    {q:"導尿管 Bundle 每日評估重點？", a:"①每日評估留置必要性、儘早移除 ②維持密閉引流系統 ③尿袋低於膀胱位置且不接觸地面 ④會陰清潔與管路固定。"},
+    {q:"遵從率怎麼算？查核表在哪？", a:"遵從率＝完全符合 Bundle 各項目之查核次數 ÷ 總查核次數 ×100%。查核表放於單位指定位置（如護理站感控資料夾），須能立即出示。"}
+  ]
+},
+{
+  no:"6", title:"器械與衛材清潔消毒／滅菌管理",
+  mnemonic:"滅菌包三查：「指示帶變色、包裝完整、效期未過」",
+  cards:[
+    {q:"滅菌包與化學指示劑要檢查什麼？無菌物品過期怎麼辦？", a:"檢查：化學指示帶是否完全變色、包裝是否完整乾燥無破損、是否在有效期限內。過期或包裝破損視同未滅菌，須退回重新處理，不可使用。"},
+    {q:"內視鏡或照護儀器的清消流程？消毒液濃度多久測一次？", a:"依原廠與單位 SOP：預清洗→測漏→酵素清潔→高層次消毒→沖洗乾燥→儲存。消毒液有效濃度每日（每次使用前）以試紙監測並記錄。"},
+    {q:"無菌物品儲存環境的溫濕度規範與紀錄？", a:"專區儲存、離地離牆、避免潮濕日曬；溫濕度每日監測並登錄於紀錄表（依單位規範，常見溫度 <24℃、相對濕度 <70%），紀錄放置於儲存區可隨時出示。"}
+  ]
+},
+{
+  no:"7", title:"傳染病通報、TOCC 與群聚應變",
+  mnemonic:"TOCC＝「旅遊、職業、接觸、群聚」四史",
+  cards:[
+    {q:"遇疑似法定傳染病，通報流程與時限？", a:"立即通知單位主管與感控人員，依法定類別於規定時限內至法定傳染病通報系統通報主管機關（第一類最急、須立即處理），同時做好病人隔離安置與紀錄。"},
+    {q:"TOCC 怎麼問、怎麼記？", a:"T 旅遊史、O 職業別、C 接觸史、C 群聚史。於門急診／入住前詢問病人與家屬並記錄於病歷；有症狀者先戴口罩、分流安置。"},
+    {q:"單位發生疑似群聚感染（上呼吸道、腹瀉、疥瘡）怎麼辦？", a:"立即通報感控啟動應變：病例隔離／分艙分流、加強環境清消與手部衛生、健康監測擴大調查、必要時依規定通報衛生主管機關，並記錄疫調過程。"}
+  ]
+},
+{
+  no:"8", title:"工作人員健康管理與教育訓練",
+  mnemonic:"三件事：「時數答得出、生病要通報、疫苗有紀錄」",
+  cards:[
+    {q:"今年（及去年）完成多少小時感控教育訓練？主題？", a:"依個人實際時數回答（例：每年至少 4 小時，含手部衛生、PPE 穿脫、清消、針紮處置等主題），須與訓練紀錄一致。"},
+    {q:"同仁出現發燒、嘔吐、腹瀉、出疹怎麼辦？", a:"主動通報單位主管進行健康監測，依規定請假休養、暫停照護工作（尤其餐飲與直接照護），症狀解除達規定時間後再返回工作。"},
+    {q:"員工體檢與疫苗接種的紀錄管理？", a:"到職與定期體檢紀錄由人事／職安保存；B 肝（含抗體檢驗）、流感（每年）、MMR 等疫苗接種紀錄建檔管理，稽核時須可出示。"}
+  ]
+}
+];
+
+/* ============================================================
+   測驗題庫（20 題單選）
+============================================================ */
+const QUESTIONS = [
+{q:"洗手五時機中，屬於「接觸病人前」之外的另一個『前』是？", opts:["執行清潔／無菌操作前","進入病室前","吃飯前","上班前"], ans:0, exp:"五時機＝兩前三後：接觸病人前、執行清潔/無菌操作前。"},
+{q:"洗手五時機的第三項是？", opts:["暴露體液風險後","接觸病人後","接觸病人周遭環境後","脫手套後"], ans:0, exp:"順序：①接觸病人前 ②清潔/無菌操作前 ③暴露體液風險後 ④接觸病人後 ⑤接觸病人周遭環境後。"},
+{q:"乾洗手（酒精性乾洗手液）搓揉時間應為？", opts:["20–30 秒","5–10 秒","40–60 秒","2 分鐘"], ans:0, exp:"乾洗手 20–30 秒；濕洗手 40–60 秒。"},
+{q:"濕洗手（肥皂＋清水）全程時間應為？", opts:["40–60 秒","10–15 秒","20–30 秒","3 分鐘以上"], ans:0, exp:"濕洗手 40–60 秒。"},
+{q:"洗手七步驟的正確口訣是？", opts:["內外夾弓大立腕","外內弓夾大腕立","內外弓夾腕大立","夾內外大弓立腕"], ans:0, exp:"內、外、夾、弓、大、立、腕。"},
+{q:"脫卸 PPE 時，第一個脫的是？", opts:["手套","口罩","護目鏡","防護衣"], ans:0, exp:"脫序：手套→防護衣→護目鏡/面罩→口罩，污染最重的先脫。"},
+{q:"脫完所有 PPE 後，第一件要做的事是？", opts:["立即執行手部衛生","填寫紀錄","補充新的 PPE","量體溫"], ans:0, exp:"脫卸後須立即手部衛生。"},
+{q:"疥瘡與 MDRO（多重抗藥性菌株）病人應採取哪種隔離防護？", opts:["接觸傳染防護","空氣傳染防護","飛沫傳染防護","不需特殊防護"], ans:0, exp:"疥瘡、MDRO 屬接觸傳染防護：手套＋隔離衣、設備專用。"},
+{q:"多劑量藥品開封後，若仿單未註明效期，最長可使用？", opts:["28 天","7 天","3 天","90 天"], ans:0, exp:"須標示開封日與到期日；仿單未註明時最長不超過 28 天。"},
+{q:"抽取藥品應在哪裡準備？", opts:["清潔區（藥品準備區）","病人床邊","治療車上任意處","污物間"], ans:0, exp:"須於清潔區抽取，且禁止針頭留置藥瓶重複抽取。"},
+{q:"針紮盒（尖銳物收集盒）裝到多滿就必須封口更換？", opts:["2/3 滿","全滿","1/3 滿","滿出來再換"], ans:0, exp:"2/3 滿即封口更換，不可擠壓。"},
+{q:"被針紮到後，第一步應該？", opts:["立即以肥皂與清水沖洗傷口並通報","不理它繼續工作","用嘴吸出血液","隔天再說"], ans:0, exp:"立即沖洗→通報→依流程評估來源病人並追蹤抽血。"},
+{q:"一般環境清潔使用的漂白水濃度為？", opts:["500 ppm","50 ppm","5,000 ppm","10,000 ppm"], ans:0, exp:"一般環境 500 ppm；嘔吐物/腹瀉/諾羅、腸病毒污染區 1,000–5,000 ppm。"},
+{q:"諾羅病毒嘔吐物污染區域應使用的漂白水濃度為？", opts:["1,000–5,000 ppm","100 ppm","500 ppm","10 ppm"], ans:0, exp:"吐瀉、諾羅或腸病毒污染區須提高至 1,000–5,000 ppm。"},
+{q:"消毒液塗抹於表面後，正確的做法是？", opts:["靜置足夠接觸時間再擦拭","立刻擦乾","馬上用清水沖掉","噴越多越好不用等"], ans:0, exp:"須靜置規定之接觸時間（Contact Time）才能達到消毒效果。"},
+{q:"環境擦拭的正確順序原則是？", opts:["由乾淨到髒污、由高到低、不回擦","由髒到乾淨","由低到高","來回反覆擦最乾淨"], ans:0, exp:"淨→污、高→低、同一面不回擦。"},
+{q:"下列何者屬於高頻率接觸表面（High-Touch Surfaces）？", opts:["床欄與門把","天花板","倉庫牆面","屋頂水塔"], ans:0, exp:"床欄、床旁桌、門把、開關、呼叫鈴等須每日重點清消。"},
+{q:"導尿管 Care Bundle 中，尿袋的正確位置是？", opts:["低於膀胱且不接觸地面","高於膀胱","放在床上病人身旁","直接放地上"], ans:0, exp:"維持密閉引流、尿袋低於膀胱且不落地，並每日評估留置必要性。"},
+{q:"CLABSI 組合式照護針對的是哪種裝置？", opts:["中心靜脈導管","導尿管","呼吸器","鼻胃管"], ans:0, exp:"CAUTI＝導尿管、CLABSI＝中心靜脈導管、VAP＝呼吸器。"},
+{q:"TOCC 四個字母分別代表？", opts:["旅遊史、職業別、接觸史、群聚史","體溫、血氧、心跳、意識","檢傷、掛號、看診、批價","旅遊史、疫苗史、用藥史、過敏史"], ans:0, exp:"T 旅遊、O 職業、C 接觸、C 群聚，門急診/入住前須詢問並記錄。"}
+];
+
+const PASS_SCORE = 80;
+const STORE_KEY = "ic-quiz-records";
+
+/* ★★ 部署設定 ★★
+   將 Google Apps Script「網頁應用程式」網址貼在下方引號內（以 https://script.google.com/macros/s/... 開頭）。
+   留空字串時，成績退回存於本機瀏覽器（localStorage）。 */
+const BACKEND_URL = "https://script.google.com/macros/s/AKfycby_z86w6OlJLLtE31KHc2CJ-BZb2r1Aku5nm5U6ank2_yhudKyDkG3Eu39drIWzwFECvA/exec";
+
+/* ============================================================
+   讀書卡渲染
+============================================================ */
+function renderTopics(){
+  const box = document.getElementById("topics");
+  box.innerHTML = TOPICS.map(t=>`
+    <div class="topic">
+      <div class="topic-head"><span class="no">主題 ${t.no}</span><h2>${t.title}</h2></div>
+      <div class="mnemonic">🧠 ${t.mnemonic}</div>
+      <div class="cards">
+        ${t.cards.map(c=>`
+          <div class="flip" tabindex="0" role="button" aria-label="翻面看答案">
+            <div class="flip-inner">
+              <div class="face front">
+                <div class="tag">問</div>
+                <div class="txt">${c.q}</div>
+                <div class="hint">點我看答案 ↻</div>
+              </div>
+              <div class="face back">
+                <div class="tag">答</div>
+                <div class="txt">${c.a}</div>
+                <div class="hint">點我回到問題 ↻</div>
+              </div>
+            </div>
+          </div>`).join("")}
+      </div>
+    </div>`).join("");
+  box.querySelectorAll(".flip").forEach(el=>{
+    const toggle=()=>el.classList.toggle("flipped");
+    el.addEventListener("click",toggle);
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+  });
+}
+
+/* ============================================================
+   分頁切換
+============================================================ */
+function showTab(name){
+  ["study","quiz","records"].forEach(t=>{
+    document.getElementById("view-"+t).classList.toggle("hidden", t!==name);
+    document.getElementById("tab-"+t).classList.toggle("active", t===name);
+  });
+  if(name==="records") loadRecords();
+  window.scrollTo({top:0});
+}
+
+/* ============================================================
+   測驗流程
+============================================================ */
+let quiz = null;
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function startQuiz(){
+  const name = document.getElementById("quiz-name").value.trim();
+  if(!name){ alert("請先輸入姓名再開始測驗。"); return; }
+  const qs = shuffle(QUESTIONS).map(q=>{
+    const order = shuffle(q.opts.map((_,i)=>i));
+    return {
+      q:q.q, exp:q.exp,
+      opts:order.map(i=>q.opts[i]),
+      ans:order.indexOf(q.ans)
+    };
+  });
+  quiz = { name, qs, idx:0, correct:0, wrong:[] };
+  document.getElementById("quiz-start").classList.add("hidden");
+  document.getElementById("quiz-result").classList.add("hidden");
+  document.getElementById("quiz-run").classList.remove("hidden");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const cur = quiz.qs[quiz.idx];
+  document.getElementById("q-num").textContent = `第 ${quiz.idx+1} 題／共 ${quiz.qs.length} 題　·　作答者：${quiz.name}`;
+  document.getElementById("q-progress").style.width = (quiz.idx/quiz.qs.length*100)+"%";
+  document.getElementById("q-text").textContent = cur.q;
+  document.getElementById("q-feedback").innerHTML = "";
+  document.getElementById("q-next").classList.add("hidden");
+  const box = document.getElementById("q-opts");
+  box.innerHTML = "";
+  cur.opts.forEach((opt,i)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = "ABCD"[i] + "．" + opt;
+    b.onclick = ()=>answer(i);
+    box.appendChild(b);
+  });
+}
+
+function answer(i){
+  const cur = quiz.qs[quiz.idx];
+  const btns = document.querySelectorAll("#q-opts .opt");
+  btns.forEach(b=>b.disabled=true);
+  btns[cur.ans].classList.add("correct");
+  if(i===cur.ans){
+    quiz.correct++;
+    document.getElementById("q-feedback").innerHTML = `<strong>✔ 答對了！</strong>　${cur.exp}`;
+  }else{
+    btns[i].classList.add("wrong");
+    quiz.wrong.push(cur);
+    document.getElementById("q-feedback").innerHTML = `<strong>✘ 答錯囉。</strong>　${cur.exp}`;
+  }
+  const nextBtn = document.getElementById("q-next");
+  nextBtn.textContent = quiz.idx+1 < quiz.qs.length ? "下一題 →" : "看成績 →";
+  nextBtn.classList.remove("hidden");
+}
+
+function nextQuestion(){
+  quiz.idx++;
+  if(quiz.idx < quiz.qs.length){ renderQuestion(); }
+  else{ finishQuiz(); }
+}
+
+async function finishQuiz(){
+  const total = quiz.qs.length;
+  const score = Math.round(quiz.correct/total*100);
+  document.getElementById("quiz-run").classList.add("hidden");
+  const res = document.getElementById("quiz-result");
+  res.classList.remove("hidden");
+  document.getElementById("r-score").textContent = score + " 分";
+  document.getElementById("r-detail").textContent = `${quiz.name}　答對 ${quiz.correct}／${total} 題`;
+  document.getElementById("r-pass").innerHTML = score>=PASS_SCORE
+    ? `<span class="pass ok">✔ 通過（${PASS_SCORE} 分以上）</span>`
+    : `<span class="pass no">✘ 未通過，請複習後再測（通過標準 ${PASS_SCORE} 分）</span>`;
+  const rv = document.getElementById("r-review");
+  rv.innerHTML = quiz.wrong.length
+    ? `<h3>需要複習的題目：</h3>` + quiz.wrong.map(w=>
+        `<div class="review-item">${w.q}<br><span class="ra">正解：${w.opts[w.ans]}</span></div>`).join("")
+    : `<h3 style="color:var(--teal-deep)">全部答對，太強了！🎉</h3>`;
+  await saveRecord({ name:quiz.name, score, correct:quiz.correct, total, ts:Date.now() });
+}
+
+function resetQuiz(){
+  document.getElementById("quiz-result").classList.add("hidden");
+  document.getElementById("quiz-start").classList.remove("hidden");
+}
+
+/* ============================================================
+   成績儲存與紀錄（共用儲存）
+============================================================ */
+async function readAllRecords(){
+  try{
+    if(BACKEND_URL){
+      const res = await fetch(BACKEND_URL, {method:"GET"});
+      const data = await res.json();
+      return data.ok ? data.records : [];
+    }
+    if(window.storage && window.storage.get){
+      const r = await window.storage.get(STORE_KEY, true);
+      return r && r.value ? JSON.parse(r.value) : [];
+    }
+    const v = localStorage.getItem(STORE_KEY);
+    return v ? JSON.parse(v) : [];
+  }catch(e){ console.error("讀取成績失敗", e); return []; }
+}
+
+async function saveRecord(rec){
+  try{
+    if(BACKEND_URL){
+      // 以 text/plain 送出可避免瀏覽器 CORS 預檢，Apps Script 端以 JSON.parse 解析
+      const res = await fetch(BACKEND_URL, {
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify(rec)
+      });
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || "後端回報失敗");
+      return;
+    }
+    const all = await readAllRecords();
+    all.push(rec);
+    if(window.storage && window.storage.set){
+      await window.storage.set(STORE_KEY, JSON.stringify(all), true);
+    }else{
+      localStorage.setItem(STORE_KEY, JSON.stringify(all));
+    }
+  }catch(e){
+    console.error("儲存失敗", e);
+    // 後端失敗時退回本機保存，避免成績遺失
+    try{
+      const v = localStorage.getItem(STORE_KEY);
+      const all = v ? JSON.parse(v) : [];
+      all.push(rec);
+      localStorage.setItem(STORE_KEY, JSON.stringify(all));
+      alert("成績上傳失敗，已暫存於本機瀏覽器。請通知管理者，並截圖成績畫面留存。");
+    }catch(e2){
+      alert("成績儲存失敗，請截圖成績畫面留存。");
+    }
+  }
+}
+
+function fmt(ts){
+  const d = new Date(ts);
+  const p = n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+const MEDALS = ["🥇","🥈","🥉","🏆","🏆"];
+
+function renderLeaderboard(all){
+  const box = document.getElementById("leaderboard-box");
+  if(!all.length){
+    box.innerHTML = `<div class="empty">尚無成績，完成測驗即可上榜！</div>`;
+    return;
+  }
+  // 取每人最佳成績（同分取較早達成者）
+  const best = {};
+  for(const r of all){
+    const k = r.name;
+    if(!best[k] || r.score > best[k].score || (r.score === best[k].score && r.ts < best[k].ts)){
+      best[k] = r;
+    }
+  }
+  const top5 = Object.values(best)
+    .sort((a,b)=> b.score - a.score || a.ts - b.ts)
+    .slice(0,5);
+  box.innerHTML = `<div class="leaderboard">` + top5.map((r,i)=>`
+    <div class="lb-row ${i===0?"first":""}">
+      <span class="lb-medal">${MEDALS[i]}</span>
+      <span class="lb-name">${escapeHtml(r.name)}</span>
+      <span class="lb-sub">${fmt(r.ts)}</span>
+      <span class="lb-score">${r.score} 分</span>
+    </div>`).join("") + `</div>`;
+}
+
+async function loadRecords(){
+  const box = document.getElementById("records-box");
+  box.innerHTML = `<div class="empty">載入中…</div>`;
+  document.getElementById("leaderboard-box").innerHTML = `<div class="empty">載入中…</div>`;
+  const all = (await readAllRecords()).sort((a,b)=>b.ts-a.ts);
+  renderLeaderboard(all);
+  if(!all.length){
+    box.innerHTML = `<div class="empty">目前還沒有任何成績，完成測驗後會自動記錄在這裡。</div>`;
+    return;
+  }
+  box.innerHTML = `
+    <table>
+      <thead><tr><th>姓名</th><th>分數</th><th>答對題數</th><th>結果</th><th>測驗時間</th></tr></thead>
+      <tbody>
+        ${all.map(r=>`
+          <tr>
+            <td>${escapeHtml(r.name)}</td>
+            <td><span class="badge-score ${r.score<PASS_SCORE?"low":""}">${r.score}</span></td>
+            <td>${r.correct}／${r.total}</td>
+            <td>${r.score>=PASS_SCORE?"✔ 通過":"✘ 未通過"}</td>
+            <td>${fmt(r.ts)}</td>
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+async function exportCSV(){
+  const all = (await readAllRecords()).sort((a,b)=>b.ts-a.ts);
+  if(!all.length){ alert("目前沒有成績可匯出。"); return; }
+  const rows = [["姓名","分數","答對題數","總題數","結果","測驗時間"]]
+    .concat(all.map(r=>[r.name,r.score,r.correct,r.total,r.score>=PASS_SCORE?"通過":"未通過",fmt(r.ts)]));
+  const csv = "\uFEFF" + rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "感控測驗成績.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* 初始化 */
+renderTopics();
+document.getElementById("storage-note").textContent = BACKEND_URL
+  ? "※ 成績即時上傳至單位成績總表（Google 試算表），所有裝置共用同一份排行榜，作答不需登入任何帳號。"
+  : "※ 尚未設定後端網址：成績僅儲存於本機瀏覽器，不同裝置之間不會互通。請管理者於程式內 BACKEND_URL 填入 Apps Script 網址以啟用全院共用成績。";
+</script>
+</body>
+</html>
