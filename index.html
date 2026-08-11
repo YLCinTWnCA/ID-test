@@ -232,7 +232,7 @@ footer{text-align:center;color:var(--ink-soft);font-size:.78rem;padding:20px;let
       <button class="btn ghost" style="margin-top:0" onclick="loadRecords()">🔄 重新整理</button>
       <button class="btn ghost" style="margin-top:0" onclick="exportCSV()">⬇️ 匯出 CSV</button>
     </div>
-    <div class="lb-title">🏅 排行榜（前五名，取每人最佳成績）</div>
+    <div class="lb-title">🏅 排行榜（滿分 100 皆列金牌榜；其餘依最佳成績排名）</div>
     <div id="leaderboard-box"><div class="empty">載入中…</div></div>
     <div class="lb-title">📋 全部紀錄</div>
     <div id="records-box"><div class="empty">載入中…</div></div>
@@ -597,7 +597,7 @@ function fmt(ts){
   return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-const MEDALS = ["🥇","🥈","🥉","🏆","🏆"];
+const RUNNER_MEDALS = ["🥈","🥉","🏆","🏆"];
 
 function renderLeaderboard(all){
   const box = document.getElementById("leaderboard-box");
@@ -613,16 +613,26 @@ function renderLeaderboard(all){
       best[k] = r;
     }
   }
-  const top5 = Object.values(best)
-    .sort((a,b)=> b.score - a.score || a.ts - b.ts)
-    .slice(0,5);
-  box.innerHTML = `<div class="leaderboard">` + top5.map((r,i)=>`
-    <div class="lb-row ${i===0?"first":""}">
-      <span class="lb-medal">${MEDALS[i]}</span>
+  const ranked = Object.values(best).sort((a,b)=> b.score - a.score || a.ts - b.ts);
+  // 滿分者全部列金牌榜（不限人數，依達成時間排序）
+  const golds = ranked.filter(r=>r.score===100);
+  const others = ranked.filter(r=>r.score<100).slice(0, RUNNER_MEDALS.length);
+  const row = (medal, r, first)=>`
+    <div class="lb-row ${first?"first":""}">
+      <span class="lb-medal">${medal}</span>
       <span class="lb-name">${escapeHtml(r.name)}</span>
       <span class="lb-sub">${fmt(r.ts)}</span>
       <span class="lb-score">${r.score} 分</span>
-    </div>`).join("") + `</div>`;
+    </div>`;
+  let html = `<div class="leaderboard">`;
+  if(golds.length){
+    html += golds.map(r=>row("🥇", r, true)).join("");
+  }else{
+    html += `<div class="empty" style="padding:12px 0">🥇 金牌榜虛位以待——考到滿分 100 就上榜！</div>`;
+  }
+  html += others.map((r,i)=>row(RUNNER_MEDALS[i], r, false)).join("");
+  html += `</div>`;
+  box.innerHTML = html;
 }
 
 async function loadRecords(){
